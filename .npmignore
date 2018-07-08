@@ -1,0 +1,9 @@
+/node_modules/
+/.vscode/
+/.sass-cache/
+/.idea/
+/src/
+gulpfile.js
+index.html
+.babelrc
+bs-config.js
