@@ -15,7 +15,7 @@ exports.devServer = ({ host, port } = {}) => ({
       // Poll using interval (in ms, accepts boolean too)
       poll: 1000,
     },
-    historyApiFallback:true,
+    historyApiFallback: true,
   },
   plugins: [
     // Ignore node_modules so CPU usage with poll
@@ -44,14 +44,15 @@ exports.loadCSS = ({ include, exclude } = {}) => ({
 
 const MiniCssExtractPlugin = require("extract-css-chunks-webpack-plugin");
 
-exports.extractCSS = ({ include, exclude, use = [] }) => {
+exports.extractCSS = ({ include, exclude, use, hot = [] }) => {
   // Output extracted CSS to a file
   const plugin = new MiniCssExtractPlugin({
     // Options similar to the same options in webpackOptions.output
     // both options are optional
     filename: "[name].css",
     chunkFilename: "[id].css",
-    hot: true // optional as the plugin cannot automatically detect if you are using HOT, not for production use
+    hot: hot, // optional as the plugin cannot automatically detect if you are using HOT, not for production use
+    allChunks: true,
   });
 
   return {
@@ -71,3 +72,19 @@ exports.extractCSS = ({ include, exclude, use = [] }) => {
     plugins: [plugin],
   };
 };
+
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+
+exports.clean = path => ({
+  plugins: [new CleanWebpackPlugin([path])],
+});
+
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
+
+exports.attachRevision = () => ({
+  plugins: [
+    new webpack.BannerPlugin({
+      banner: new GitRevisionPlugin().version(),
+    }),
+  ],
+});

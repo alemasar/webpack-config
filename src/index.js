@@ -1,5 +1,4 @@
-import component from "./component";
-import "./main.scss";
+import component from "./js/component";
 
 
 document.body.appendChild(component());
