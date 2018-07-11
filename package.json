@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "launch": "concurrently \"npm run api\" \"npm run dev\" \"npm run build\" \"npm run server\"",
-    "start": "webpack-dev-server --env development",
+    "start": "concurrently \"npm run build\" \"webpack-dev-server --env development\"",
     "build": "webpack --env production && rm -rf \"./dist/css/style.js\"",
     "server": "webpack-dev-server",
     "api": "node ./server/api.js",
@@ -26,6 +26,7 @@
   "dependencies": {},
   "devDependencies": {
     "clean-webpack-plugin": "^0.1.19",
+    "concurrently": "^3.6.0",
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "event-hooks-webpack-plugin": "^2.0.0",
