@@ -12,6 +12,7 @@ p['./css/style'] = './src/scss/main.scss';
 
 const commonConfig = merge({
     entry: p,
+    devtool: 'source-map',
     plugins: [
         new HtmlWebpackPlugin({
             title: "Webpack demo",
@@ -34,18 +35,16 @@ const productionConfig = merge([
                 loader: 'css-loader',
                 options: {
                     url: true,
-                    sourceMap: true,
                 }
             }, 'resolve-url-loader', {
                 loader: 'sass-loader',
-                options: {
-                    sourceMap: true,
-                }
+                options: {}
             }
         ]
     }, false),
     //    parts.attachRevision(),
     parts.loadImages({}),
+    parts.onFinished()
 ]);
 
 const developmentConfig = merge([
@@ -58,6 +57,7 @@ const developmentConfig = merge([
         use: ["css-loader", "sass-loader"]
     }, true),
     parts.loadImages({}),
+    parts.onFinished()
 ]);
 
 module.exports = mode => {

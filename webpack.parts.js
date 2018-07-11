@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("extract-css-chunks-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const GitRevisionPlugin = require("git-revision-webpack-plugin");
-const WriteFilePlugin = require("write-file-webpack-plugin");
+const EventHooksPlugin = require('event-hooks-webpack-plugin');
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -71,6 +71,17 @@ exports.attachRevision = () => ({
   ],
 });
 
+exports.onFinished = () => ({
+  plugins: [
+
+    new EventHooksPlugin({
+      'done': () => {
+        console.log("As you can see the compiling is finished")
+      }
+    })
+  ],
+});
+
 exports.loadImages = ({ include, exclude } = {}) => ({
   module: {
     rules: [
@@ -82,8 +93,8 @@ exports.loadImages = ({ include, exclude } = {}) => ({
           loader: "file-loader",
           options: {
             name: '[name].[ext]',
-            useRelativePath:true,
-            outputPath:'../dist/',
+            useRelativePath: true,
+            outputPath: '../dist/',
             publicPath: '../images/'
           }
         },
