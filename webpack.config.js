@@ -29,9 +29,23 @@ const PATHS = {
 const productionConfig = merge([
     parts.clean(PATHS.build),
     parts.extractCSS({
-        use: ["css-loader", "sass-loader"]
+        use: [
+            {
+                loader: 'css-loader',
+                options: {
+                    url: true,
+                    sourceMap: true,
+                }
+            }, 'resolve-url-loader', {
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: true,
+                }
+            }
+        ]
     }, false),
-    parts.attachRevision(),
+    //    parts.attachRevision(),
+    parts.loadImages({}),
 ]);
 
 const developmentConfig = merge([
@@ -43,6 +57,7 @@ const developmentConfig = merge([
     parts.extractCSS({
         use: ["css-loader", "sass-loader"]
     }, true),
+    parts.loadImages({}),
 ]);
 
 module.exports = mode => {

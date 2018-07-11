@@ -1,5 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
+const MiniCssExtractPlugin = require("extract-css-chunks-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
+const WriteFilePlugin = require("write-file-webpack-plugin");
 
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
@@ -22,27 +26,9 @@ exports.devServer = ({ host, port } = {}) => ({
     // watching drops significantly.
     new webpack.WatchIgnorePlugin([
       path.join(__dirname, "node_modules")
-    ]),
+    ])
   ]
 });
-
-const ExtractCssChunks = require("extract-css-chunks-webpack-plugin")
-
-exports.loadCSS = ({ include, exclude } = {}) => ({
-  module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        include,
-        exclude,
-
-        use: [ExtractCssChunks.loader, "css-loader", "sass-loader"],
-      },
-    ],
-  },
-});
-
-const MiniCssExtractPlugin = require("extract-css-chunks-webpack-plugin");
 
 exports.extractCSS = ({ include, exclude, use, hot = [] }) => {
   // Output extracted CSS to a file
@@ -73,13 +59,9 @@ exports.extractCSS = ({ include, exclude, use, hot = [] }) => {
   };
 };
 
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-
 exports.clean = path => ({
   plugins: [new CleanWebpackPlugin([path])],
 });
-
-const GitRevisionPlugin = require("git-revision-webpack-plugin");
 
 exports.attachRevision = () => ({
   plugins: [
@@ -87,4 +69,25 @@ exports.attachRevision = () => ({
       banner: new GitRevisionPlugin().version(),
     }),
   ],
+});
+
+exports.loadImages = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g)$/,
+        include,
+        exclude,
+        use: {
+          loader: "file-loader",
+          options: {
+            name: '[name].[ext]',
+            useRelativePath:true,
+            outputPath:'../dist/',
+            publicPath: '../images/'
+          }
+        },
+      },
+    ],
+  },
 });
