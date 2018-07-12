@@ -16,7 +16,8 @@ const commonConfig = merge({
     plugins: [
         new HtmlWebpackPlugin({
             title: "Webpack demo",
-            excludeAssets: [/style.js/]
+            excludeAssets: [/style.js/],
+            template: './src/index.html'
         }),
         new HtmlWebpackExcludeAssetsPlugin()
     ],

@@ -4,4 +4,11 @@ body {
   background-image: url("../images/bg_mountain_everest.jpg");
   background-repeat: no-repeat;
   background-position: center;
+  .icon{
+    width:200px;
+    height:200px;
+    background-image: url("../images/icon.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 }
