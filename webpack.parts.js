@@ -102,3 +102,16 @@ exports.loadImages = ({ include, exclude } = {}) => ({
     ],
   },
 });
+
+exports.loadHTML = ({ } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader'
+        }
+      },
+    ],
+  },
+});

@@ -4,7 +4,7 @@ const path = require("path");
 const parts = require("./webpack.parts");
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin');
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
 let p = {}
 p['./js/main'] = './src/index.js';
@@ -19,7 +19,8 @@ const commonConfig = merge({
             excludeAssets: [/style.js/],
             template: './src/index.html'
         }),
-        new HtmlWebpackExcludeAssetsPlugin()
+        new HtmlWebpackExcludeAssetsPlugin(),
+        new HtmlWebpackHarddiskPlugin()
     ],
 });
 
@@ -30,6 +31,7 @@ const PATHS = {
 
 const productionConfig = merge([
     parts.clean(PATHS.build),
+    parts.loadHTML({}),
     parts.extractCSS({
         use: [
             {
@@ -54,6 +56,7 @@ const developmentConfig = merge([
         host: process.env.HOST,
         port: process.env.PORT,
     }),
+    parts.loadHTML({}),
     parts.extractCSS({
         use: ["css-loader", "sass-loader"]
     }, true),
